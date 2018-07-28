@@ -79,10 +79,10 @@
       "title": "Fix the refrigerator"
     },
     {
-      "id": 14,
-      "title": "Buy grocery",
       "details": "Go to the market to buy carrots",
-      "done": false
+      "done": true,
+      "id": 14,
+      "title": "Buy grocery"
     },
     {
       "details": "Chat with your friends about last night match",
