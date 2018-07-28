@@ -52,6 +52,7 @@ public class TodosFragment extends Fragment implements TodosContract.View {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setPresenter(TodosPresenter.getInstance(new TodosSubscriber(NetworkManager.getInstance().getTodosService()), this));
+        getLifecycle().addObserver(mTodosPresenter);
     }
 
     @Nullable
@@ -71,6 +72,12 @@ public class TodosFragment extends Fragment implements TodosContract.View {
     public void onResume() {
         super.onResume();
         mTodosPresenter.getTodos();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getLifecycle().removeObserver(mTodosPresenter);
     }
 
     @Override
@@ -105,6 +112,5 @@ public class TodosFragment extends Fragment implements TodosContract.View {
     @Override
     public void setPresenter(TodosContract.Presenter presenter) {
         mTodosPresenter = presenter;
-        mTodosPresenter.start();
     }
 }

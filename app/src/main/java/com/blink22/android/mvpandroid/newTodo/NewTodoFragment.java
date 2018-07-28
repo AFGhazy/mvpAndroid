@@ -47,18 +47,18 @@ public class NewTodoFragment extends Fragment implements NewTodoContract.View {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setPresenter(NewTodoPresenter.getInstance(new TodosSubscriber(NetworkManager.getInstance().getTodosService()), this));
+        getLifecycle().addObserver(mPresenter);
     }
 
     @Override
     public void setPresenter(NewTodoContract.Presenter presenter) {
         mPresenter = presenter;
-        mPresenter.start();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mPresenter.stop();
+        getLifecycle().removeObserver(mPresenter);
     }
 
     @Nullable

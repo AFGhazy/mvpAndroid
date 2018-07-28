@@ -1,5 +1,7 @@
 package com.blink22.android.mvpandroid.newTodo;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.OnLifecycleEvent;
 import android.util.Log;
 
 import com.blink22.android.mvpandroid.models.Todo;
@@ -36,11 +38,13 @@ public class NewTodoPresenter implements NewTodoContract.Presenter {
     }
 
     @Override
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     public void start() {
         this.mCompositeDisposable = new CompositeDisposable();
     }
 
     @Override
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     public void stop() {
         mCompositeDisposable.dispose();
     }

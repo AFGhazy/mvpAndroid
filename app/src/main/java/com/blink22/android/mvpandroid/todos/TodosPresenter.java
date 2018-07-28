@@ -1,5 +1,9 @@
 package com.blink22.android.mvpandroid.todos;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.OnLifecycleEvent;
+
 import com.blink22.android.mvpandroid.models.Todo;
 import com.blink22.android.mvpandroid.network.TodosSubscriber;
 
@@ -36,12 +40,12 @@ public class TodosPresenter implements TodosContract.Presenter {
     }
 
     @Override
-    public void start() {
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE) public void start() {
         this.mCompositeDisposable = new CompositeDisposable();
     }
 
     @Override
-    public void stop() {
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY) public void stop() {
         mCompositeDisposable.dispose();
     }
 
