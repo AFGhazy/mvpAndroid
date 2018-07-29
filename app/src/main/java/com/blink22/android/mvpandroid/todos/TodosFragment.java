@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.blink22.android.mvpandroid.BaseApp;
 import com.blink22.android.mvpandroid.activities.BaseActivity;
 import com.blink22.android.mvpandroid.adapters.TodosAdapter;
 import com.blink22.android.mvpandroid.models.Todo;
@@ -24,6 +25,8 @@ import com.blink22.android.mvpandroid.R;
 import com.blink22.android.mvpandroid.network.NetworkManager;
 import com.blink22.android.mvpandroid.network.TodosSubscriber;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -32,6 +35,11 @@ import butterknife.ButterKnife;
  */
 
 public class TodosFragment extends Fragment implements TodosContract.View {
+    @BindView(R.id.todos_list) RecyclerView mTodos;
+    @BindView(R.id.todos_progress) ProgressBar mProgressBar;
+    TodosContract.Presenter mTodosPresenter;
+    @Inject TodosSubscriber mTodosSubscriber;
+
 
     public static TodosFragment newInstance() {
 
@@ -44,14 +52,13 @@ public class TodosFragment extends Fragment implements TodosContract.View {
 
     private static final String TAG = TodosActivity.class.getSimpleName();
 
-    @BindView(R.id.todos_list) RecyclerView mTodos;
-    @BindView(R.id.todos_progress) ProgressBar mProgressBar;
-    TodosContract.Presenter mTodosPresenter;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setPresenter(TodosPresenter.getInstance(new TodosSubscriber(NetworkManager.getInstance().getTodosService()), this));
+
+        ((BaseApp) getActivity().getApplication()).getNetworkComponent().inject(this);
+
+        setPresenter(TodosPresenter.getInstance(mTodosSubscriber, this));
         getLifecycle().addObserver(mTodosPresenter);
     }
 

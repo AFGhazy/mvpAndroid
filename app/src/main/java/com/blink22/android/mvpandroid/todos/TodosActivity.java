@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.blink22.android.mvpandroid.BaseApp;
 import com.blink22.android.mvpandroid.activities.BaseActivity;
 import com.blink22.android.mvpandroid.adapters.TodosAdapter;
 import com.blink22.android.mvpandroid.models.Todo;
@@ -33,5 +34,10 @@ public class TodosActivity extends BaseActivity{
     @Override
     protected Fragment createFragment() {
         return TodosFragment.newInstance();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 }
