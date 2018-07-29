@@ -16,7 +16,6 @@ import com.blink22.android.mvpandroid.R;
 import com.blink22.android.mvpandroid.network.NetworkManager;
 import com.blink22.android.mvpandroid.network.TodosSubscriber;
 
-
 import javax.inject.Inject;
 
 import butterknife.BindView;

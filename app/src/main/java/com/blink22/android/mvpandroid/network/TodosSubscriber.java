@@ -1,8 +1,7 @@
 package com.blink22.android.mvpandroid.network;
 
-import com.blink22.android.mvpandroid.apiInterfaces.TodosService;
+import com.blink22.android.mvpandroid.apiinterfaces.TodosService;
 import com.blink22.android.mvpandroid.models.Todo;
-
 
 import java.util.ArrayList;
 

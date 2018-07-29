@@ -12,7 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.blink22.android.mvpandroid.BaseApp;
-import com.blink22.android.mvpandroid.activities.BaseActivity;
+import com.blink22.android.mvpandroid.BaseActivity;
 import com.blink22.android.mvpandroid.adapters.TodosAdapter;
 import com.blink22.android.mvpandroid.models.Todo;
 

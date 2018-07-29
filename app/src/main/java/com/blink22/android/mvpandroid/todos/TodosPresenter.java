@@ -51,8 +51,6 @@ public class TodosPresenter implements TodosContract.Presenter {
 
         mView.showWait();
 
-
-
         DisposableObserver<ArrayList<Todo>> disposableObserver = mTodosSubscriber.getTodos(new TodosSubscriber.Callback<ArrayList<Todo>>() {
             @Override
             public void onSuccess(ArrayList<Todo> todos) {

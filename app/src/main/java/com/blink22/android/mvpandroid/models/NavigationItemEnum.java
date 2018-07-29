@@ -12,7 +12,6 @@ public enum NavigationItemEnum {
     HOME(R.string.list_todos, android.R.drawable.ic_dialog_info, TodosActivity.class, 0),
     ADD_NEW_NOTE(R.string.add_new_todo, android.R.drawable.ic_input_add, NewTodoActivity.class, 1);
 
-
     private int labelResourceId;
     private int iconResourceId;
     private Class classToLaunch;
@@ -41,5 +40,3 @@ public enum NavigationItemEnum {
         return id;
     }
 }
-
-

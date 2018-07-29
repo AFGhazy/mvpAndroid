@@ -1,4 +1,4 @@
-package com.blink22.android.mvpandroid.activities;
+package com.blink22.android.mvpandroid;
 
 import android.content.Intent;
 import android.os.Bundle;
