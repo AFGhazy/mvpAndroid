@@ -2,6 +2,7 @@ package com.blink22.android.mvpandroid.di;
 
 import android.app.Application;
 
+import com.blink22.android.mvpandroid.BuildConfig;
 import com.blink22.android.mvpandroid.apiInterfaces.TodosService;
 import com.blink22.android.mvpandroid.network.TodosSubscriber;
 import com.google.gson.Gson;
@@ -26,10 +27,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class NetworkModule {
-    String mUrl;
-
-    public NetworkModule(String url) {
-        this.mUrl = url;
+    @Provides
+    @Named("api_url")
+    String provideApiLink() {
+        return BuildConfig.BASE_URL;
     }
 
     @Provides
@@ -65,11 +66,13 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    Retrofit provideRetrofit(@Named("cached") OkHttpClient okHttpClient, @Named("rxjava2_call_adapter") CallAdapter.Factory rxJava2CallAdapterFactory) {
+    Retrofit provideRetrofit(@Named("cached") OkHttpClient okHttpClient,
+                             @Named("rxjava2_call_adapter") CallAdapter.Factory rxJava2CallAdapterFactory,
+                             @Named("api_url") String url) {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(rxJava2CallAdapterFactory)
-                .baseUrl(mUrl)
+                .baseUrl(url)
                 .client(okHttpClient)
                 .build();
     }

@@ -20,7 +20,7 @@ public class BaseApp extends Application {
 
         mNetworkComponent = DaggerNetworkComponent.builder()
                 .appModule(new AppModule(this))
-                .networkModule(new NetworkModule(BuildConfig.BASE_URL))
+                .networkModule(new NetworkModule())
                 .build();
 
     }
