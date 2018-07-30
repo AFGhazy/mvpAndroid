@@ -10,7 +10,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class Todo{
 
-
     @SerializedName("id")
     private int id;
 

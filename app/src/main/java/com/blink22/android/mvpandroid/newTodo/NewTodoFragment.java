@@ -11,9 +11,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.blink22.android.mvpandroid.BaseApp;
 import com.blink22.android.mvpandroid.R;
 import com.blink22.android.mvpandroid.network.NetworkManager;
 import com.blink22.android.mvpandroid.network.TodosSubscriber;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +36,7 @@ public class NewTodoFragment extends Fragment implements NewTodoContract.View {
     @BindView(R.id.new_todo_submit)
     Button mSubmit;
     NewTodoContract.Presenter mPresenter;
+    @Inject TodosSubscriber mTodosSubscriber;
 
     public static NewTodoFragment newInstance() {
         
@@ -46,7 +50,10 @@ public class NewTodoFragment extends Fragment implements NewTodoContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setPresenter(NewTodoPresenter.getInstance(new TodosSubscriber(NetworkManager.getInstance().getTodosService()), this));
+
+        ((BaseApp) getActivity().getApplication()).getNetworkComponent().inject(this);
+
+        setPresenter(NewTodoPresenter.getInstance(mTodosSubscriber, this));
         getLifecycle().addObserver(mPresenter);
     }
 

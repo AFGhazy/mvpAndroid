@@ -1,9 +1,8 @@
-package com.blink22.android.mvpandroid.apiInterfaces;
+package com.blink22.android.mvpandroid.apiinterfaces;
 
 import com.blink22.android.mvpandroid.models.Todo;
 
 import java.util.ArrayList;
-
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;

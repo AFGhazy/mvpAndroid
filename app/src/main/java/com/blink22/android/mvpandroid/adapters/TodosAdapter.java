@@ -29,7 +29,6 @@ public class TodosAdapter extends RecyclerView.Adapter<TodosVH> {
         mContext = context;
     }
 
-
     @Override
     public TodosVH onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_todos, null);

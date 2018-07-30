@@ -2,7 +2,7 @@
   "todos": [
     {
       "details": "Go to the market to buy carrots",
-      "done": false,
+      "done": true,
       "id": 1,
       "title": "Buy grocery"
     },
@@ -149,6 +149,12 @@
       "done": true,
       "id": 25,
       "title": "dsa Title"
+    },
+    {
+      "details": "Ghazy Description",
+      "done": false,
+      "id": 26,
+      "title": "Title Ghazy"
     }
   ]
 }

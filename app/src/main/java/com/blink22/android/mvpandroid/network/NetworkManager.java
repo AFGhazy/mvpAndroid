@@ -1,7 +1,7 @@
 package com.blink22.android.mvpandroid.network;
 
 import com.blink22.android.mvpandroid.BuildConfig;
-import com.blink22.android.mvpandroid.apiInterfaces.TodosService;
+import com.blink22.android.mvpandroid.apiinterfaces.TodosService;
 
 import java.io.IOException;
 
@@ -39,8 +39,6 @@ public class NetworkManager {
 
     public TodosService getTodosService() {
         if (mTodosService == null) {
-
-
             mTodosService = new Retrofit
                     .Builder()
                     .baseUrl(BuildConfig.BASE_URL)
@@ -50,7 +48,6 @@ public class NetworkManager {
                     .build()
                     .create(TodosService.class);
         }
-
         return mTodosService;
     }
 }

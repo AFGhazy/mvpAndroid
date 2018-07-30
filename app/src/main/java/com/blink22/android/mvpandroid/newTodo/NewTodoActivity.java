@@ -2,7 +2,7 @@ package com.blink22.android.mvpandroid.newTodo;
 
 import android.support.v4.app.Fragment;
 
-import com.blink22.android.mvpandroid.activities.BaseActivity;
+import com.blink22.android.mvpandroid.BaseActivity;
 
 /**
  * Created by ahmedghazy on 7/26/18.

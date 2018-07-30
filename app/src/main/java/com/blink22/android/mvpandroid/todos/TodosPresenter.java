@@ -7,13 +7,10 @@ import android.arch.lifecycle.OnLifecycleEvent;
 import com.blink22.android.mvpandroid.models.Todo;
 import com.blink22.android.mvpandroid.network.TodosSubscriber;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by ahmedghazy on 7/25/18.
@@ -53,8 +50,6 @@ public class TodosPresenter implements TodosContract.Presenter {
     public void getTodos() {
 
         mView.showWait();
-
-
 
         DisposableObserver<ArrayList<Todo>> disposableObserver = mTodosSubscriber.getTodos(new TodosSubscriber.Callback<ArrayList<Todo>>() {
             @Override
