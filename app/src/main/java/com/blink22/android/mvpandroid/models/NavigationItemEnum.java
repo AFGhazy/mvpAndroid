@@ -1,8 +1,8 @@
 package com.blink22.android.mvpandroid.models;
 
 import com.blink22.android.mvpandroid.R;
-import com.blink22.android.mvpandroid.newTodo.NewTodoActivity;
-import com.blink22.android.mvpandroid.todos.TodosActivity;
+import com.blink22.android.mvpandroid.ui.newtodo.NewTodoActivity;
+import com.blink22.android.mvpandroid.ui.todos.TodosActivity;
 
 /**
  * Created by ahmedghazy on 7/26/18.

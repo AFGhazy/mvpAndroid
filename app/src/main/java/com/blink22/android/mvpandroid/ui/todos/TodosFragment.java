@@ -1,29 +1,25 @@
-package com.blink22.android.mvpandroid.todos;
+package com.blink22.android.mvpandroid.ui.todos;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.blink22.android.mvpandroid.BaseApp;
-import com.blink22.android.mvpandroid.BaseActivity;
 import com.blink22.android.mvpandroid.adapters.TodosAdapter;
-import com.blink22.android.mvpandroid.models.Todo;
 
 import java.util.ArrayList;
 
 import com.blink22.android.mvpandroid.R;
-import com.blink22.android.mvpandroid.network.NetworkManager;
-import com.blink22.android.mvpandroid.network.TodosSubscriber;
+import com.blink22.android.mvpandroid.data.db.model.Todo;
+import com.blink22.android.mvpandroid.ui.base.BaseActivity;
 
 import javax.inject.Inject;
 
@@ -37,8 +33,6 @@ import butterknife.ButterKnife;
 public class TodosFragment extends Fragment implements TodosContract.View {
     @BindView(R.id.todos_list) RecyclerView mTodos;
     @BindView(R.id.todos_progress) ProgressBar mProgressBar;
-    TodosContract.Presenter mTodosPresenter;
-    @Inject TodosSubscriber mTodosSubscriber;
 
     public static TodosFragment newInstance() {
 
@@ -55,10 +49,6 @@ public class TodosFragment extends Fragment implements TodosContract.View {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((BaseApp) getActivity().getApplication()).getNetworkComponent().inject(this);
-
-        setPresenter(TodosPresenter.getInstance(mTodosSubscriber, this));
-        getLifecycle().addObserver(mTodosPresenter);
     }
 
     @Nullable
@@ -69,6 +59,8 @@ public class TodosFragment extends Fragment implements TodosContract.View {
 
         ButterKnife.bind(this, v);
 
+        ((TodosActivity) getActivity()).getPresenter().onAttach(this);
+
         mTodos.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return v;
@@ -77,13 +69,12 @@ public class TodosFragment extends Fragment implements TodosContract.View {
     @Override
     public void onResume() {
         super.onResume();
-        mTodosPresenter.getTodos();
+        ((TodosActivity) getActivity()).getPresenter().getTodos();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getLifecycle().removeObserver(mTodosPresenter);
     }
 
     @Override
@@ -104,19 +95,16 @@ public class TodosFragment extends Fragment implements TodosContract.View {
 
     @Override
     public void onGetTodosSuccess(ArrayList<Todo> todos) {
+        Log.i(TAG, "here");
+        Log.i(TAG, todos.size() + "");
         TodosAdapter adapter = new TodosAdapter(getActivity().getApplicationContext(), todos,
                 new TodosAdapter.OnItemClickListener() {
                     @Override
                     public void onClick(Todo item) {
-                       mTodosPresenter.updateTodo(item);
+                        ((TodosActivity) getActivity()).getPresenter().updateTodo(item);
                     }
                 });
 
         mTodos.setAdapter(adapter);
-    }
-
-    @Override
-    public void setPresenter(TodosContract.Presenter presenter) {
-        mTodosPresenter = presenter;
     }
 }

@@ -5,10 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.blink22.android.mvpandroid.R;
-import com.blink22.android.mvpandroid.models.Todo;
+import com.blink22.android.mvpandroid.data.db.model.Todo;
 import com.blink22.android.mvpandroid.viewHolders.TodosVH;
 
 import java.util.ArrayList;
@@ -21,12 +20,10 @@ public class TodosAdapter extends RecyclerView.Adapter<TodosVH> {
 
     private final OnItemClickListener mListener;
     private ArrayList<Todo> mData;
-    private Context mContext;
 
     public TodosAdapter(Context context, ArrayList<Todo> data, OnItemClickListener listener) {
         mData = data;
         mListener = listener;
-        mContext = context;
     }
 
     @Override

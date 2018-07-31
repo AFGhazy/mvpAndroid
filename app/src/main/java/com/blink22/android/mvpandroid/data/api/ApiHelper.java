@@ -1,4 +1,4 @@
-package com.blink22.android.mvpandroid.apiinterfaces;
+package com.blink22.android.mvpandroid.data.api;
 
 import com.blink22.android.mvpandroid.data.db.model.Todo;
 
@@ -12,16 +12,15 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 /**
- * Created by ahmedghazy on 7/25/18.
+ * Created by ahmedghazy on 7/30/18.
  */
 
-public interface TodosService {
-
+public interface ApiHelper {
     @GET("/todos")
     Observable<ArrayList<Todo>> getTodos();
 
     @POST("/todos")
-    Observable<Todo> createTodo(@Body Todo todo);
+    Observable<Todo> saveTodo(@Body Todo todo);
 
     @PUT("/todos/{id}")
     Observable<Todo> updateTodo(@Path("id") int id, @Body Todo todo);

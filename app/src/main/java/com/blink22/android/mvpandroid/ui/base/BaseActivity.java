@@ -1,4 +1,4 @@
-package com.blink22.android.mvpandroid;
+package com.blink22.android.mvpandroid.ui.base;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.blink22.android.mvpandroid.BaseApp;
 import com.blink22.android.mvpandroid.R;
+import com.blink22.android.mvpandroid.di.component.ActivityComponent;
+import com.blink22.android.mvpandroid.di.component.DaggerActivityComponent;
+import com.blink22.android.mvpandroid.di.module.ActivityModule;
 import com.blink22.android.mvpandroid.models.NavigationItemEnum;
 
 import butterknife.BindView;
@@ -27,9 +31,21 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @BindView(R.id.nav_view) NavigationView navigationView;
 
+    public ActivityComponent getActivityComponent() {
+        return mActivityComponent;
+    }
+
+    private ActivityComponent mActivityComponent;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mActivityComponent = DaggerActivityComponent.builder()
+                .applicationComponent(((BaseApp) getApplication()).getComponent())
+                .activityModule(new ActivityModule(this))
+                .build();
+
         setContentView(R.layout.activity_fragment);
         ButterKnife.bind(this);
 

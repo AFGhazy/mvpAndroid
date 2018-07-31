@@ -1,9 +1,7 @@
 package com.blink22.android.mvpandroid.viewHolders;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -12,7 +10,7 @@ import butterknife.ButterKnife;
 
 import com.blink22.android.mvpandroid.R;
 import com.blink22.android.mvpandroid.adapters.TodosAdapter;
-import com.blink22.android.mvpandroid.models.Todo;
+import com.blink22.android.mvpandroid.data.db.model.Todo;
 
 /**
  * Created by ahmedghazy on 7/25/18.
@@ -31,7 +29,7 @@ public class TodosVH extends RecyclerView.ViewHolder {
 
     public void bind(final Todo todo, final TodosAdapter.OnItemClickListener listener) {
         mTitle.setText(todo.getTitle());
-        mDescription.setText(todo.getDetails());
+        mDescription.setText(todo.getDescription());
         mDone.setChecked(todo.isDone());
         mDone.setOnClickListener(new View.OnClickListener() {
 
