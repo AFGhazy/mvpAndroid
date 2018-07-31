@@ -17,6 +17,10 @@ public class Todo extends RealmObject {
     private String description;
     private boolean done;
 
+    public Todo(int id) {
+        this.id = id;
+    }
+
     public void set(Todo todo) {
         setTitle(todo.getTitle());
         setDescription(todo.getDescription());
