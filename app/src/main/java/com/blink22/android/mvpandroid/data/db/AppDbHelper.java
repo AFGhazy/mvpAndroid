@@ -102,28 +102,4 @@ public class AppDbHelper implements DbHelper, LifecycleObserver {
 
         return observable;
     }
-
-    @Override
-    public Observable<Boolean> deleteTodos() {
-        Observable<Boolean> observable = Observable.create(new ObservableOnSubscribe<Boolean>() {
-            @Override
-            public void subscribe(final ObservableEmitter<Boolean> emitter) throws Exception {
-                try {
-                    final Realm currentRealm = Realm.getDefaultInstance();
-                    currentRealm.executeTransaction(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            realm.delete(Todo.class);
-                            emitter.onNext(true);
-                            emitter.onComplete();
-                        }
-                    });
-                } catch (Exception e) {
-                    emitter.onError(e);
-                }
-            }
-        });
-
-        return observable;
-    }
 }

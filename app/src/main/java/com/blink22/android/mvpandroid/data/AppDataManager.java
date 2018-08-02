@@ -60,95 +60,23 @@ public class AppDataManager implements DataManager {
         mApiHelper.getTodos()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ArrayList<Todo>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(final ArrayList<Todo> apiTodos) {
+                .subscribe(
+                    apiTodos -> {
                         mDbHelper.getTodos()
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Observer<ArrayList<Todo>>() {
-                                    @Override
-                                    public void onSubscribe(Disposable d) {
+                                .subscribe(
+                                    dbTodos -> {
+                                        syncMissingAndUpdatedVersionOfTodos(dbTodos, apiTodos, mApiHelper);
+                                        syncMissingAndUpdatedVersionOfTodos(apiTodos, dbTodos, mDbHelper);
+                                    },
+                                    throwable -> {},
+                                    () -> {}
 
-                                    }
-
-                                    @Override
-                                    public void onNext(final ArrayList<Todo> dbTodos) {
-                                        for(Todo dbTodo: dbTodos) {
-
-                                            boolean mostRecent = false;
-                                            boolean found = false;
-                                            for(Todo apiTodo: apiTodos) {
-                                                if(dbTodo.getId() == apiTodo.getId()) {
-                                                    found = true;
-                                                    if (new Date(dbTodo.getUpdatedDate()).compareTo(new Date(apiTodo.getUpdatedDate())) > 0) {
-                                                        mostRecent = true;
-                                                    }
-                                                }
-                                            }
-
-                                            if(!found) {
-                                                mApiHelper.saveTodo(dbTodo).subscribeOn(Schedulers.io()).subscribe();
-
-                                            }
-                                            else {
-                                                if(mostRecent) {
-                                                    mApiHelper.updateTodo(dbTodo.getId(), dbTodo).subscribeOn(Schedulers.io()).subscribe();
-                                                }
-                                            }
-                                        }
-
-                                        for(Todo apiTodo: apiTodos) {
-                                            boolean mostRecent = false;
-                                            boolean found = false;
-                                            for(Todo dbTodo: dbTodos) {
-                                                if(dbTodo.getId() == apiTodo.getId()) {
-                                                    found = true;
-                                                    if (new Date(apiTodo.getUpdatedDate()).compareTo(new Date(dbTodo.getUpdatedDate())) > 0) {
-                                                        mostRecent = true;
-                                                    }
-                                                }
-                                            }
-
-                                            if(!found) {
-                                                mDbHelper.saveTodo(apiTodo).subscribeOn(Schedulers.io()).subscribe();
-                                            }
-                                            else {
-                                                if(mostRecent) {
-                                                    mDbHelper.updateTodo(apiTodo.getId(), apiTodo).subscribeOn(Schedulers.io()).subscribe();
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-
-                                    }
-
-                                    @Override
-                                    public void onComplete() {
-
-                                    }
-                                });
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
+                                );
+                    },
+                    throwable -> {},
+                    () -> {});
     }
 
     @Override
@@ -159,5 +87,29 @@ public class AppDataManager implements DataManager {
     @Override
     public void setSyncDone(boolean syncRequired) {
         mPrefsHelper.setSyncDone(syncRequired);
+    }
+
+    private void syncMissingAndUpdatedVersionOfTodos(ArrayList<Todo> sourceArr, ArrayList<Todo> destinationArr, ApiHelper destination) {
+        for(Todo srcTodo: sourceArr) {
+            boolean mostRecent = false;
+            boolean found = false;
+            for(Todo destTodo: destinationArr) {
+                if(srcTodo.getId() == destTodo.getId()) {
+                    found = true;
+                    if (new Date(srcTodo.getUpdatedDate()).compareTo(new Date(destTodo.getUpdatedDate())) > 0) {
+                        mostRecent = true;
+                    }
+                }
+            }
+
+            if(!found) {
+                destination.saveTodo(srcTodo).subscribeOn(Schedulers.io()).subscribe();
+            }
+            else {
+                if(mostRecent) {
+                    destination.updateTodo(srcTodo.getId(), srcTodo).subscribeOn(Schedulers.io()).subscribe();
+                }
+            }
+        }
     }
 }

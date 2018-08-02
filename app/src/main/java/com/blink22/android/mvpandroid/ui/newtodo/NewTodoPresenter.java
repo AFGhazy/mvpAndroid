@@ -44,23 +44,15 @@ public class NewTodoPresenter<V extends NewTodoContract.View> extends BasePresen
                     .saveTodo(todo)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new DisposableObserver<Todo>() {
-                        @Override
-                        public void onNext(Todo todo) {
-                            getView().showToastWithMessage(R.string.create_todo_success);
-                            getView().terminate();
-                        }
+                    .subscribe(
+                            retTodo -> {
+                                getView().showToastWithMessage(R.string.create_todo_success);
+                                getView().terminate();
+                            },
+                            throwable -> {},
+                            () -> {}
+                    ));
 
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    }));
         }
     }
 }

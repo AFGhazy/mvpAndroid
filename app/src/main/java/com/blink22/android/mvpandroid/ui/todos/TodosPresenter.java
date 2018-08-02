@@ -12,6 +12,7 @@ import com.blink22.android.mvpandroid.service.SyncAdapter;
 import com.blink22.android.mvpandroid.ui.base.BasePresenter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -63,23 +64,14 @@ public class TodosPresenter<V extends TodosContract.View> extends BasePresenter<
                     .getTodos()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(new DisposableObserver<ArrayList<Todo>>() {
-                        @Override
-                        public void onNext(ArrayList<Todo> todos) {
-                           getView().onGetTodosSuccess(todos);
-                           getView().removeWait();
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                           getView().onFailure(e.getMessage());
-                        }
-
-                        @Override
-                        public void onComplete() {
-
-                        }
-                   })
+                    .subscribe(
+                            todos -> {
+                                getView().removeWait();
+                                getView().onGetTodosSuccess(todos);
+                            },
+                            throwable -> getView().onFailure(throwable.getLocalizedMessage()),
+                            () -> {}
+                    )
             );
         }
     }
@@ -87,27 +79,16 @@ public class TodosPresenter<V extends TodosContract.View> extends BasePresenter<
     @Override
     public void updateTodo(Todo todo) {
         todo.setDone(!todo.isDone());
+        todo.setUpdatedDate(new Date().toString());
         getCompositeDisposable().add( getDataManager()
                 .updateTodo(todo.getId(), todo)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<Todo>(
-                    ) {
-                        @Override
-                        public void onNext(Todo todo) {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-
-                        @Override
-                        public void onComplete() {
-
-                        }
-                })
+                .subscribe(
+                        retTodo -> {},
+                        throwable -> {},
+                        () -> {}
+                )
         );
     }
 }
