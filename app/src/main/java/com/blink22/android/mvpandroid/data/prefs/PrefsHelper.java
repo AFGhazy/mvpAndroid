@@ -5,7 +5,7 @@ package com.blink22.android.mvpandroid.data.prefs;
  */
 
 public interface PrefsHelper {
-    String getUserName();
+    boolean isSyncDone();
 
-    void setUserName(String userName);
+    void setSyncDone(boolean syncRequired);
 }

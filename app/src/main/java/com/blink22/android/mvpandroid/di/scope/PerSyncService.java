@@ -1,4 +1,4 @@
-package com.blink22.android.mvpandroid.di;
+package com.blink22.android.mvpandroid.di.scope;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

@@ -1,8 +1,12 @@
 <resources>
-    <string name="app_name">Playground</string>
+    <string name="app_name">androidMvp</string>
     <string name="list_todos">Show all</string>
     <string name="add_new_todo">New one</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="submit">Submit</string>
+    <string name="content_authority">com.blink22.android.mvpandroid</string>
+    <string name="account_type">com.blink22.android.mvpandroid</string>
+    <string name="account_name">SyncAccount</string>
+    <string name="create_todo_success">Todo created successfuly</string>
 </resources>

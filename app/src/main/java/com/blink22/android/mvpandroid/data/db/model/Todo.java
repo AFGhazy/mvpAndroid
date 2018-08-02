@@ -16,6 +16,7 @@ public class Todo extends RealmObject {
     private String title;
     private String description;
     private boolean done;
+    private String updatedDate;
 
     public Todo(int id) {
         this.id = id;
@@ -63,5 +64,13 @@ public class Todo extends RealmObject {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public String getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(String updatedDate) {
+        this.updatedDate = updatedDate;
     }
 }

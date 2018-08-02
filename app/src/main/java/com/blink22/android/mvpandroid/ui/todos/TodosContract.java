@@ -1,7 +1,7 @@
 package com.blink22.android.mvpandroid.ui.todos;
 
 import com.blink22.android.mvpandroid.data.db.model.Todo;
-import com.blink22.android.mvpandroid.di.PerActivity;
+import com.blink22.android.mvpandroid.di.scope.PerActivity;
 import com.blink22.android.mvpandroid.ui.base.IBasePresenter;
 import com.blink22.android.mvpandroid.ui.base.IBaseView;
 

@@ -1,4 +1,4 @@
-package com.blink22.android.mvpandroid.models;
+package com.blink22.android.mvpandroid.data.model;
 
 import com.blink22.android.mvpandroid.R;
 import com.blink22.android.mvpandroid.ui.newtodo.NewTodoActivity;

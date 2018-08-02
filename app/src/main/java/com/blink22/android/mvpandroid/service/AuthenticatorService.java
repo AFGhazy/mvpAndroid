@@ -1,4 +1,4 @@
-package com.blink22.android.mvpandroid.data.db;
+package com.blink22.android.mvpandroid.service;
 
 /**
  * Created by ahmedghazy on 7/31/18.
@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import com.blink22.android.mvpandroid.service.AccountAuthenticator;
+
 /**
  * This is used only by Android to run our {@link AccountAuthenticator}.
  */
@@ -18,14 +20,12 @@ public class AuthenticatorService extends Service {
 
     @Override
     public void onCreate() {
-        // Instantiate our authenticator when the service is created
         this.authenticator = new AccountAuthenticator(this);
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        // Return the authenticator's IBinder
         return authenticator.getIBinder();
     }
 }

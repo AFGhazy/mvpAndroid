@@ -1,6 +1,7 @@
-package com.blink22.android.mvpandroid.adapters;
+package com.blink22.android.mvpandroid.ui.todos;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,6 @@ import android.view.ViewGroup;
 
 import com.blink22.android.mvpandroid.R;
 import com.blink22.android.mvpandroid.data.db.model.Todo;
-import com.blink22.android.mvpandroid.viewHolders.TodosVH;
 
 import java.util.ArrayList;
 
@@ -21,19 +21,20 @@ public class TodosAdapter extends RecyclerView.Adapter<TodosVH> {
     private final OnItemClickListener mListener;
     private ArrayList<Todo> mData;
 
-    public TodosAdapter(Context context, ArrayList<Todo> data, OnItemClickListener listener) {
+    TodosAdapter(Context context, ArrayList<Todo> data, OnItemClickListener listener) {
         mData = data;
         mListener = listener;
     }
 
     @Override
-    public TodosVH onCreateViewHolder(ViewGroup parent, int viewType) {
+    @NonNull
+    public TodosVH onCreateViewHolder(@NonNull  ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_todos, null);
         return new TodosVH(view);
     }
 
     @Override
-    public void onBindViewHolder(TodosVH holder, int position) {
+    public void onBindViewHolder(@NonNull TodosVH holder, int position) {
         holder.bind(mData.get(position), mListener);
     }
 

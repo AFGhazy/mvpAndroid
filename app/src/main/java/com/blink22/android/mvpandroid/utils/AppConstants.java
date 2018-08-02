@@ -10,4 +10,6 @@ public final class AppConstants {
 
     public static final int CACHE_SIZE = 5 * 1024 * 1024;
 
+    public static final int APP_SYNC_FREQUENCY = 5 * 60; // in sec
+
 }

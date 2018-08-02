@@ -1,4 +1,4 @@
-package com.blink22.android.mvpandroid.data.db;
+package com.blink22.android.mvpandroid.service;
 
 /**
  * Created by ahmedghazy on 7/31/18.

@@ -8,6 +8,6 @@ import android.arch.lifecycle.LifecycleObserver;
 
 public interface IBasePresenter<V extends IBaseView> extends LifecycleObserver{
 
-    public void onAttach(V view);
+    void onAttach(V view);
 
 }

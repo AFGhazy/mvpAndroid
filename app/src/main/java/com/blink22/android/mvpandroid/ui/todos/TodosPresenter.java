@@ -1,9 +1,14 @@
 package com.blink22.android.mvpandroid.ui.todos;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.OnLifecycleEvent;
+import android.content.Context;
 import android.util.Log;
 
 import com.blink22.android.mvpandroid.data.DataManager;
 import com.blink22.android.mvpandroid.data.db.model.Todo;
+import com.blink22.android.mvpandroid.service.SyncAdapter;
 import com.blink22.android.mvpandroid.ui.base.BasePresenter;
 
 import java.util.ArrayList;
@@ -11,6 +16,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -26,52 +32,66 @@ public class TodosPresenter<V extends TodosContract.View> extends BasePresenter<
     private static final String TAG = TodosPresenter.class.getSimpleName();
 
     @Inject
-    public TodosPresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
-        super(dataManager, compositeDisposable);
+    public TodosPresenter(@Named("application_context") Context context, DataManager dataManager, CompositeDisposable compositeDisposable) {
+        super(context, dataManager, compositeDisposable);
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    public void onCreate() {
+        super.onCreate();
+        if(!getDataManager().isSyncDone()) {
+            SyncAdapter.performSync(getAppContext());
+            getDataManager().setSyncDone(true);
+        }
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    public void onResume() {
+        getTodos();
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    void onDestry() {
+        super.onDestroy();
     }
 
     @Override
     public void getTodos() {
+        if(getView() != null) {
+            getView().showWait();
+            getCompositeDisposable().add(getDataManager()
+                    .getTodos()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableObserver<ArrayList<Todo>>() {
+                        @Override
+                        public void onNext(ArrayList<Todo> todos) {
+                           getView().onGetTodosSuccess(todos);
+                           getView().removeWait();
+                        }
 
-        getView().showWait();
+                        @Override
+                        public void onError(Throwable e) {
+                           getView().onFailure(e.getMessage());
+                        }
 
+                        @Override
+                        public void onComplete() {
 
-        getCompositeDisposable().add(getDataManager()
-                .getTodos()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<ArrayList<Todo>>() {
-                    @Override
-                    public void onNext(ArrayList<Todo> todos) {
-                        getView().onGetTodosSuccess(todos);
-                        getView().removeWait();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        getView().onFailure(e.getMessage());
-                        Log.i(TAG, e.getLocalizedMessage());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                }
-            )
-        );
+                        }
+                   })
+            );
+        }
     }
 
     @Override
     public void updateTodo(Todo todo) {
         todo.setDone(!todo.isDone());
-
         getCompositeDisposable().add( getDataManager()
                 .updateTodo(todo.getId(), todo)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableObserver<Todo>(
-
                     ) {
                         @Override
                         public void onNext(Todo todo) {
@@ -87,7 +107,7 @@ public class TodosPresenter<V extends TodosContract.View> extends BasePresenter<
                         public void onComplete() {
 
                         }
-                    }));
+                })
+        );
     }
-
 }

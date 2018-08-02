@@ -3,6 +3,7 @@ package com.blink22.android.mvpandroid.data.api;
 import com.blink22.android.mvpandroid.data.db.model.Todo;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.inject.Inject;
 

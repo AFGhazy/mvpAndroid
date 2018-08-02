@@ -27,10 +27,10 @@
             </intent-filter>
 
         </activity>
-        
+
         <provider
-            android:authorities="com.blink22.android.mvpandroid"
-            android:name=".data.db.TodoProvider"
+            android:authorities="@string/content_authority"
+            android:name=".service.TodoProvider"
             android:exported="false"
             android:syncable="true"
             />
@@ -39,7 +39,7 @@
 
         </activity>
 
-        <service android:name=".data.db.AuthenticatorService">
+        <service android:name=".service.AuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>
             </intent-filter>
@@ -48,8 +48,9 @@
                 android:resource="@xml/authenticator"/>
         </service>
 
-        <service android:name=".data.db.SyncService"
+        <service android:name=".service.SyncService"
                     android:exported="true"
+                    android:process=":sync"
             >
 
             <intent-filter>

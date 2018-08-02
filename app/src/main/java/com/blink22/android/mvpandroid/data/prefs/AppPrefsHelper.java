@@ -11,20 +11,21 @@ import javax.inject.Inject;
 public class AppPrefsHelper implements PrefsHelper {
     SharedPreferences mSharedPreferences;
 
-    private static final String PREF_KEY_USER_NAME = "PREF_KEY_USER_NAME";
+    private static final String PREF_KEY_SYNC_REQUIRED = "PREF_KEY_SYNC_REQUIRED";
 
     @Inject
     public AppPrefsHelper(SharedPreferences sharedPreferences) {
         mSharedPreferences = sharedPreferences;
     }
 
+
     @Override
-    public String getUserName() {
-        return mSharedPreferences.getString(PREF_KEY_USER_NAME, null);
+    public boolean isSyncDone() {
+        return mSharedPreferences.getBoolean(PREF_KEY_SYNC_REQUIRED, false);
     }
 
     @Override
-    public void setUserName(String userName) {
-        mSharedPreferences.edit().putString(PREF_KEY_USER_NAME, userName).apply();
+    public void setSyncDone(boolean syncRequired) {
+        mSharedPreferences.edit().putBoolean(PREF_KEY_SYNC_REQUIRED, syncRequired).commit();
     }
 }

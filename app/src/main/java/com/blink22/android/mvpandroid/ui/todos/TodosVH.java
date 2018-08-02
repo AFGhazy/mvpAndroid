@@ -1,4 +1,4 @@
-package com.blink22.android.mvpandroid.viewHolders;
+package com.blink22.android.mvpandroid.ui.todos;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -7,9 +7,10 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import com.blink22.android.mvpandroid.R;
-import com.blink22.android.mvpandroid.adapters.TodosAdapter;
+import com.blink22.android.mvpandroid.ui.todos.TodosAdapter;
 import com.blink22.android.mvpandroid.data.db.model.Todo;
 
 /**
@@ -21,6 +22,12 @@ public class TodosVH extends RecyclerView.ViewHolder {
     @BindView(R.id.todo_title) TextView mTitle;
     @BindView(R.id.todo_description) TextView mDescription;
     @BindView(R.id.todo_checkbox) CheckBox mDone;
+    TodosAdapter.OnItemClickListener mListener;
+    Todo mTodo;
+    @OnClick(R.id.todo_checkbox)
+    void check() {
+        mListener.onClick(mTodo);
+    }
 
     public TodosVH(View itemView) {
         super(itemView);
@@ -31,12 +38,7 @@ public class TodosVH extends RecyclerView.ViewHolder {
         mTitle.setText(todo.getTitle());
         mDescription.setText(todo.getDescription());
         mDone.setChecked(todo.isDone());
-        mDone.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                listener.onClick(todo);
-            }
-        });
+        mListener = listener;
+        mTodo = todo;
     }
 }

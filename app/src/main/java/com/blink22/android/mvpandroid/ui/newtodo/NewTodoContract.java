@@ -1,6 +1,6 @@
 package com.blink22.android.mvpandroid.ui.newtodo;
 
-import com.blink22.android.mvpandroid.di.PerActivity;
+import com.blink22.android.mvpandroid.di.scope.PerActivity;
 import com.blink22.android.mvpandroid.ui.base.IBasePresenter;
 import com.blink22.android.mvpandroid.ui.base.IBaseView;
 
@@ -12,7 +12,11 @@ public interface NewTodoContract {
     interface View extends IBaseView {
 
         String getTitle();
+
         String getDescription();
+
+        void showToastWithMessage(int resId);
+
         void terminate();
 
     }

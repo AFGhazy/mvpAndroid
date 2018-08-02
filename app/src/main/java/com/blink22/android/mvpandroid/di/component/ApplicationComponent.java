@@ -18,12 +18,11 @@ import dagger.Component;
 @Singleton
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
+
     void inject(Application application);
 
-    @Named("application_context")
-    Context context();
-
-    Application application();
+    @Named("application_context") Context getApplicationContext();
 
     DataManager dataManager();
+
 }

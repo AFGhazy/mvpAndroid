@@ -2,13 +2,18 @@ package com.blink22.android.mvpandroid.ui.newtodo;
 
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.OnLifecycleEvent;
+import android.content.Context;
 
+import com.blink22.android.mvpandroid.R;
 import com.blink22.android.mvpandroid.data.DataManager;
 import com.blink22.android.mvpandroid.data.db.model.Todo;
 import com.blink22.android.mvpandroid.ui.base.BasePresenter;
 import com.blink22.android.mvpandroid.ui.todos.TodosPresenter;
 
+import java.util.Date;
+
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -24,43 +29,38 @@ public class NewTodoPresenter<V extends NewTodoContract.View> extends BasePresen
     private static final String TAG = TodosPresenter.class.getSimpleName();
 
     @Inject
-    public NewTodoPresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
-        super(dataManager,compositeDisposable);
+    public NewTodoPresenter(@Named("application_context") Context context, DataManager dataManager, CompositeDisposable compositeDisposable) {
+        super(context, dataManager,compositeDisposable);
     }
 
     @Override
     public void createTodo() {
+        if(getView() != null) {
+            Todo todo = new Todo();
+            todo.setTitle(getView().getTitle());
+            todo.setDescription(getView().getDescription());
+            todo.setUpdatedDate(new Date().toString());
+            getCompositeDisposable().add(getDataManager()
+                    .saveTodo(todo)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableObserver<Todo>() {
+                        @Override
+                        public void onNext(Todo todo) {
+                            getView().showToastWithMessage(R.string.create_todo_success);
+                            getView().terminate();
+                        }
 
-        Todo todo = new Todo();
-        todo.setTitle(getView().getTitle());
-        todo.setDescription(getView().getDescription());
+                        @Override
+                        public void onError(Throwable e) {
 
-        getCompositeDisposable().add(  getDataManager().saveTodo(todo).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableObserver<Todo>() {
-            @Override
-            public void onNext(Todo todo) {
-                getView().terminate();
-            }
+                        }
 
-            @Override
-            public void onError(Throwable e) {
+                        @Override
+                        public void onComplete() {
 
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        }) );
-
-    }
-
-    @Override
-    public void onCreate() {
-
-    }
-
-    @Override
-    public void onDestroy() {
-
+                        }
+                    }));
+        }
     }
 }

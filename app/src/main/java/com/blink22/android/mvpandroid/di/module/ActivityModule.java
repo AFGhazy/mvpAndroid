@@ -2,9 +2,8 @@ package com.blink22.android.mvpandroid.di.module;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 
-import com.blink22.android.mvpandroid.di.PerActivity;
+import com.blink22.android.mvpandroid.di.scope.PerActivity;
 import com.blink22.android.mvpandroid.ui.newtodo.NewTodoContract;
 import com.blink22.android.mvpandroid.ui.newtodo.NewTodoPresenter;
 import com.blink22.android.mvpandroid.ui.todos.TodosContract;

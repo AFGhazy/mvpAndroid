@@ -18,11 +18,6 @@ public class NewTodoActivity extends BaseActivity {
     NewTodoContract.Presenter<NewTodoContract.View> mPresenter;
 
     @Override
-    protected Fragment createFragment() {
-        return NewTodoFragment.newInstance();
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -38,7 +33,12 @@ public class NewTodoActivity extends BaseActivity {
         getLifecycle().removeObserver(mPresenter);
     }
 
-    public NewTodoContract.Presenter getPresenter() {
+    public NewTodoContract.Presenter<NewTodoContract.View> getPresenter() {
         return mPresenter;
+    }
+
+    @Override
+    protected Fragment createFragment() {
+        return NewTodoFragment.newInstance();
     }
 }
