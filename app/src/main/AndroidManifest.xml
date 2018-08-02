@@ -2,6 +2,13 @@
     package="com.blink22.android.mvpandroid">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
 
     <application
         android:name=".BaseApp"
@@ -11,7 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".todos.TodosActivity"
+        <activity android:name=".ui.todos.TodosActivity"
             android:label="@string/app_name"
             >
             <intent-filter>
@@ -20,9 +27,38 @@
             </intent-filter>
 
         </activity>
+
+        <provider
+            android:authorities="@string/content_authority"
+            android:name=".service.TodoProvider"
+            android:exported="false"
+            android:syncable="true"
+            />
         
-        <activity android:name=".newTodo.NewTodoActivity" >
+        <activity android:name=".ui.newtodo.NewTodoActivity" >
 
         </activity>
+
+        <service android:name=".service.AuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator"/>
+        </service>
+
+        <service android:name=".service.SyncService"
+                    android:exported="true"
+                    android:process=":sync"
+            >
+
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter"/>
+        </service>
     </application>
 </manifest>

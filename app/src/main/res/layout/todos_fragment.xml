@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="todos.TodosActivity">
+    tools:context=".ui.todos.TodosActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/todos_list"
