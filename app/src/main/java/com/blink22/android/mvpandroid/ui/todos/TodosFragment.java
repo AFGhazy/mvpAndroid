@@ -29,6 +29,7 @@ public class TodosFragment extends Fragment implements TodosContract.View {
     @BindView(R.id.todos_list) RecyclerView mTodos;
     @BindView(R.id.todos_progress) ProgressBar mProgressBar;
     private TodosPresenter<TodosContract.View> mTodosPresenter;
+    private TodosAdapter mTodosAdapter;
 
     public static TodosFragment newInstance() {
         return new TodosFragment();
@@ -38,6 +39,7 @@ public class TodosFragment extends Fragment implements TodosContract.View {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mTodosPresenter = ((TodosActivity) getActivity()).getPresenter();
+        mTodosAdapter = TodosAdapter.newInstance(getActivity(), mTodosPresenter);
     }
 
     @Nullable
@@ -47,6 +49,7 @@ public class TodosFragment extends Fragment implements TodosContract.View {
         View v = inflater.inflate(R.layout.todos_fragment, container, false);
         ButterKnife.bind(this, v);
         mTodosPresenter.onAttach(this);
+        mTodos.setAdapter(mTodosAdapter);
         mTodos.setLayoutManager(new LinearLayoutManager(getActivity()));
         return v;
     }
@@ -74,13 +77,7 @@ public class TodosFragment extends Fragment implements TodosContract.View {
 
     @Override
     public void onGetTodosSuccess(ArrayList<Todo> todos) {
-        TodosAdapter adapter = new TodosAdapter(getActivity().getApplicationContext(), todos,
-                new TodosAdapter.OnItemClickListener() {
-                    @Override
-                    public void onClick(Todo item) {
-                        ((TodosActivity) getActivity()).getPresenter().updateTodo(item);
-                    }
-                });
-        mTodos.setAdapter(adapter);
+        mTodosAdapter.onTodosUpdate(todos);
+        mTodos.setAdapter(mTodosAdapter);
     }
 }
